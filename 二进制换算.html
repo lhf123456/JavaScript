@@ -1,0 +1,101 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+  <title>二进制换算</title>
+  <link rel="icon" href="https://github.githubassets.com/favicon.ico" title="二进制换算" />
+  <style>
+    *{margin: 0;padding: 0;list-style: none;}
+    body{color: #fff;font: bold 26px/2 "Microsoft Yahei";background-color: #666;}
+	.wrap{text-align: center;}
+    input{font: inherit;text-align: center;}
+    ul{overflow: hidden;}
+    li{width: 20px;border: 1px solid #aaa;height: 20px;margin: 20px;float: left;}
+    #light-list li{border-radius: 50%;background: #bbb;}
+    #light-list .light{background-color: #f33;box-shadow: 0 0 10px #f63,inset 0 -2px 10px rgba(255, 255, 255, 0.3);border-color: transparent;}
+    #number{margin: 20px 0;}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <ul id="light-list">
+    <li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+  </ul>
+  <ul id="num-list">
+	<li>0</li>
+	<li>0</li>
+	<li>0</li>
+	<li>0</li>
+	<li>0</li>
+	<li>0</li>
+	<li>0</li>
+	<li>0</li>
+  </ul>
+  <div>十进制：<input id="number" type="text" /></div>
+  <div>ASCII值：<input id="ASCII" type="text" /></div>
+</div>
+<script>
+  var aLight = document.getElementById("light-list").getElementsByTagName("li");
+  var aNum = document.getElementById("num-list").getElementsByTagName("li");
+  var oNumber = document.getElementById("number");
+  var ASCII = document.getElementById("ASCII");
+  var len = aNum.length;
+  for(var i = 0; i < len; i++){
+    aLight[i].index = i;
+    aLight[i].onclick = function(){
+      if(this.className == "light"){
+        this.className = "";
+        aNum[this.index].innerHTML = "0";
+      }else{
+        this.className = "light";
+        aNum[this.index].innerHTML = "1";
+      };
+      getCode();
+    }
+  }
+  ASCII.onkeyup = function(){
+    var val = this.value;
+    if(!val) return;
+    val = val.charCodeAt(0);
+    oNumber.value = val;
+    var code = val.toString(2);
+    changeLight(code);
+  };
+  oNumber.onkeyup = function(){
+    var val = this.value;
+    if(!val) return;
+    ASCII.value = String.fromCharCode(val);
+    var code = parseInt(val).toString(2);
+    changeLight(code);
+  };
+  function getCode(){
+    var number = 0;
+    for(var i = 0; i < len; i++){
+      number += aNum[i].innerHTML;
+    }
+    number = parseInt(number, 2);
+    oNumber.value = number;
+    ASCII.value = String.fromCharCode(number);
+  };
+  function changeLight(code){
+    var temp = len - code.length;
+    for(var i = 0; i < len; i++){
+      if(i >= temp && (code.charAt(i - temp) == 1)){
+        aLight[i].className = "light";
+        aNum[i].innerHTML = "1";
+      }else{
+        aLight[i].className = "";
+        aNum[i].innerHTML = "0";
+      }
+    }
+  }
+</script>
+</body>
+</html>
